@@ -9,7 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
-*.vs
+*.vs*
 _ReSharper.*
 bin
 obj
