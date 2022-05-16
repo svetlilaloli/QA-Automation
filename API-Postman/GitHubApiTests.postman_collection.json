@@ -6,13 +6,13 @@
 	},
 	"item": [
 		{
-			"name": "Get-All-Repos",
+			"name": "All-Repos",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var responseJson = pm.response.json();\r",
+							"const responseJson = pm.response.json();\r",
 							"\r",
 							"pm.test(`Status code is 200`, () => {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -50,27 +50,33 @@
 			"response": []
 		},
 		{
-			"name": "Get-All-QA-Automation-Issues",
+			"name": "All-Issues-For-Repo",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
 							"pm.test(`Status code is 200`, () => {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
-							"pm.test(`Content-Type is present`, () => {\r",
-							"    pm.response.to.have.header(`Content-Type`);\r",
+							"pm.test(`Response holds an array of issues`, () => {\r",
+							"  pm.expect(pm.response.headers.get('Content-Type')).equals('application/json; charset=utf-8');\r",
+							"  pm.expect(Array.isArray(responseJson)).equals(true);\r",
+							"  for (let item of responseJson) {\r",
+							"    pm.expect(typeof(item)).equals(`object`);\r",
+							"    pm.expect(Number.isInteger(item.id)).equals(true);\r",
+							"    pm.expect(typeof(item.title)).equals(`string`);\r",
+							"  }\r",
 							"});\r",
-							"\r",
-							"var responseJson = pm.response.json();\r",
 							"// test if all issues are assigned\r",
 							"responseJson.forEach(issue => {\r",
-							"    pm.test(`${issue.title} is assigned to ${issue.assignee}`, () => {\r",
+							"    let user = issue.assignee === null ? null : issue.assignee.login;\r",
+							"    pm.test(`${issue.title} is assigned to \"${user}\"`, () => {\r",
 							"        pm.expect(issue.assignee).to.not.equal(null);\r",
 							"    })\r",
-							"});\r",
-							""
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -80,7 +86,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues",
+					"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues?page=1",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -92,28 +98,41 @@
 						"{{user}}",
 						"{{repo}}",
 						"issues"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Create-QA-Automation-Issue",
+			"name": "Create-Issue",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(`Issue created`, () => {\r",
-							"    pm.response.to.have.status(`Created`);\r",
+							"const requestIssue = JSON.parse(pm.request.body);\r",
+							"const responseIssue = pm.response.json();\r",
+							"\r",
+							"pm.test(`Issue Created`, () => {\r",
+							"    pm.response.to.have.status(201);\r",
 							"});\r",
-							"\r",
-							"var requestBodyTitle = JSON.parse(pm.request.body.raw).title;\r",
-							"\r",
+							"pm.test(`Response holds the posted 'issue' object`, () => {\r",
+							"    pm.expect(pm.response.headers.get(`content-type`)).equals(`application/json; charset=utf-8`);\r",
+							"    pm.expect(typeof(responseIssue)).equals(`object`);\r",
+							"    pm.expect(Number.isInteger(responseIssue.id)).equals(true);\r",
+							"    pm.expect(requestIssue.title).equals(responseIssue.title);\r",
+							"    pm.expect(requestIssue.body).equals(responseIssue.body);\r",
+							"});\r",
 							"// test if the returned issue title matches the newly-created issue title\r",
-							"pm.test(`Title is: ${requestBodyTitle}`, () => {\r",
+							"pm.test(`Title is: ${requestIssue.title}`, () => {\r",
 							"    let responseJson = pm.response.json();\r",
-							"    pm.expect(responseJson.title).to.equal(requestBodyTitle);\r",
+							"    pm.expect(responseJson.title).to.equal(requestIssue.title);\r",
 							"});\r",
 							""
 						],
@@ -152,20 +171,28 @@
 			"response": []
 		},
 		{
-			"name": "Update-QA-Automation-issue",
+			"name": "Modify-issue",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(`Issue No. 10 updated`, () => {\r",
+							"const responseJson = pm.response.json();\r",
+							"const requestIssue = JSON.parse(pm.request.body);\r",
+							"\r",
+							"pm.test(`Status code is 200`, () => {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
-							"var issue10 = pm.response.json();\r",
-							"var requestBodyBody = JSON.parse(pm.request.body.raw).body;\r",
+							"pm.test(`Response holds the modified 'issue' object`, () => {\r",
+							"    pm.expect(pm.response.headers.get(`content-type`)).equals(`application/json; charset=utf-8`);\r",
+							"    pm.expect(typeof(responseJson)).equals(`object`);\r",
+							"    pm.expect(Number.isInteger(responseJson.id)).equals(true);\r",
+							"    pm.expect(Number.isInteger(responseJson.number)).equals(true);\r",
+							"    pm.expect(requestIssue.body).equals(responseJson.body);\r",
+							"});\r",
 							"// test if the returned issue body matches the newly-updated issue body\r",
-							"pm.test(`Issue body updated`, () => {\r",
-							"    pm.expect(issue10.body).to.equal(requestBodyBody);\r",
+							"pm.test(`Issue body modified`, () => {\r",
+							"    pm.expect(responseJson.body).to.equal(requestIssue.body);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -185,7 +212,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues/10",
+					"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues/12",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -197,7 +224,498 @@
 						"{{user}}",
 						"{{repo}}",
 						"issues",
-						"10"
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Issue-By-Number",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(`Status code is 200`, () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(`Response holds an 'issue' object`, () => {\r",
+							"    pm.expect(pm.response.headers.get(`Content-Type`)).equals(`application/json; charset=utf-8`);\r",
+							"    pm.expect(typeof(responseJson)).equals(`object`);\r",
+							"    pm.expect(Number.isInteger(responseJson.id)).equals(true);\r",
+							"    pm.expect(typeof(responseJson.title)).equals(`string`);\r",
+							"});\r",
+							"pm.test(`Has a title`, () => {\r",
+							"    pm.expect(pm.response.json()).to.have.property(`title`);\r",
+							"});\r",
+							"pm.test(`Id matches`, () => {\r",
+							"    var requestIssueId = pm.request.url.path[4];\r",
+							"    var responseBodyNumber = pm.response.json().number;\r",
+							"    pm.expect(responseBodyNumber.toString()).to.equal(requestIssueId);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues/6",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"repos",
+						"{{user}}",
+						"{{repo}}",
+						"issues",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All-Comments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(`Status code is 200`, () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"// test if all comments have username\r",
+							"responseJson.forEach(comment => {\r",
+							"    pm.test(`Comment by ${comment.user.login}`, () => {\r",
+							"        pm.expect(comment.user.login).is.not.equal(null);\r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues/7/comments",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"repos",
+						"{{user}}",
+						"{{repo}}",
+						"issues",
+						"7",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Comment-By-Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(`Status code is 200`, () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues/comments/1127272931",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"repos",
+						"{{user}}",
+						"{{repo}}",
+						"issues",
+						"comments",
+						"1127272931"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create-Comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(`Status code is 201`, () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"pm.test(`Comment matches`, () => {\r",
+							"    var requestBody = JSON.parse(pm.request.body).body;\r",
+							"    var responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.body).to.equal(requestBody);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"body\": \"This is a comment from Postman using POST\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues/7/comments",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"repos",
+						"{{user}}",
+						"{{repo}}",
+						"issues",
+						"7",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modify-Comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(`Status code is 200`, () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"const comment = pm.response.json();\r",
+							"const requestBody = JSON.parse(pm.request.body).body;\r",
+							"// test if the returned issue body matches the newly-updated issue body\r",
+							"pm.test(`Comment: \"${comment.body}\"`, () => {\r",
+							"    pm.expect(comment.body).to.equal(requestBody);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"body\":\"Comment body by Postman PATCH\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues/comments/1127272931",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"repos",
+						"{{user}}",
+						"{{repo}}",
+						"issues",
+						"comments",
+						"1127272931"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete-Comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(`Status code is 204`, () => {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues/comments/1126872859",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"repos",
+						"{{user}}",
+						"{{repo}}",
+						"issues",
+						"comments",
+						"1126872859"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Close-Issue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(`Status code is 200`, () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(`State is \"Closed\"`, () => {\r",
+							"    var responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.state).to.equal(`closed`);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"state\": \"closed\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues/30",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"repos",
+						"{{user}}",
+						"{{repo}}",
+						"issues",
+						"30"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All-Labels-For-Issue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(`Status code is 200`, () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(`Label count is geater than 0`, () => {\r",
+							"    pm.expect(pm.response.json().length).to.be.greaterThan(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues/3/labels",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"repos",
+						"{{user}}",
+						"{{repo}}",
+						"issues",
+						"3",
+						"labels"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invalid-issue-#0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(`Status code is 'Not Found'`, () => {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues/0",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"repos",
+						"{{user}}",
+						"{{repo}}",
+						"issues",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create-Issue-Unauthorised-User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(`Status code is 404: User not authorised`, function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"Unauthorised\",\r\n    \"body\":\"No body.\",\r\n    \"labels\":[\"Bug\"],\r\n    \"assignee\":\"{{user}}\"\r\n}"
+				},
+				"url": {
+					"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"repos",
+						"{{user}}",
+						"{{repo}}",
+						"issues"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create-Issue-Without-Title",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(`Status code is 422 Unprocessable Entity: 'Title is required'`, () => {\r",
+							"    pm.response.to.have.status(422);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"body\":\"Issue body\"\r\n}"
+				},
+				"url": {
+					"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"repos",
+						"{{user}}",
+						"{{repo}}",
+						"issues"
 					]
 				}
 			},
@@ -208,13 +726,13 @@
 		"type": "basic",
 		"basic": [
 			{
-				"key": "username",
-				"value": "YOUR_USERNAME",
+				"key": "password",
+				"value": "YOUR_TOKEN",
 				"type": "string"
 			},
 			{
-				"key": "password",
-				"value": "YOUR_TOKEN",
+				"key": "username",
+				"value": "YOUR_USERNAME",
 				"type": "string"
 			}
 		]
