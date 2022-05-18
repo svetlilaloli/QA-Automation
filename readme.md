@@ -7,3 +7,4 @@ https://github.com/svetlilaloli/QA-Automation/wiki/NUnit-Basics
 ## API tests using Postman
 https://github.com/svetlilaloli/QA-Automation/wiki/API-Testing-using-Postman
 ## API tests using RestSharp
+https://github.com/svetlilaloli/QA-Automation/wiki/API-Testing-using-RestSharp
