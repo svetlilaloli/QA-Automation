@@ -8,3 +8,5 @@ https://github.com/svetlilaloli/QA-Automation/wiki/NUnit-Basics
 https://github.com/svetlilaloli/QA-Automation/wiki/API-Testing-using-Postman
 ## API tests using RestSharp
 https://github.com/svetlilaloli/QA-Automation/wiki/API-Testing-using-RestSharp
+## UI tests with Selenium WebDriver 
+https://github.com/svetlilaloli/QA-Automation/wiki/Selenium-WebDriver
