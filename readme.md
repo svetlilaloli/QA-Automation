@@ -5,6 +5,6 @@ Summator class has two methods: Sum and Average. The task is to create Unit test
 ### Collection class Unit tests
 https://github.com/svetlilaloli/QA-Automation/wiki/NUnit-Basics 
 ## API tests using Postman
-### GitHub API tests
-https://github.com/svetlilaloli/QA-Automation/wiki/API-Testing
+https://github.com/svetlilaloli/QA-Automation/wiki/API-Testing-using-Postman
 ## API tests using RestSharp
+https://github.com/svetlilaloli/QA-Automation/wiki/API-Testing-using-RestSharp
