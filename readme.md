@@ -10,3 +10,5 @@ https://github.com/svetlilaloli/QA-Automation/wiki/API-Testing-using-Postman
 https://github.com/svetlilaloli/QA-Automation/wiki/API-Testing-using-RestSharp
 ## UI tests with Selenium WebDriver 
 https://github.com/svetlilaloli/QA-Automation/wiki/Selenium-WebDriver
+## Selenium Page Object Model
+https://github.com/svetlilaloli/QA-Automation/wiki/Selenium-Advanced-and-POM
