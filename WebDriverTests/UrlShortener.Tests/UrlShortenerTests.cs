@@ -59,13 +59,14 @@ namespace UrlShortener.Tests
             StringAssert.Contains("Add Short URL", titleText);
             Assert.AreEqual(1, links.Count);
         }
-        [Test]
-        public void Test_AddUrlPage_AddInvalidData()
+        [TestCase("asd")]
+        [TestCase("asd.com")]
+        public void Test_AddUrlPage_AddInvalidData(string data)
         {
             driver.Url = "https://shorturl.nakov.repl.co/add-url";
             string titleText = driver.FindElement(By.CssSelector("body > main > h1")).Text;
 
-            driver.FindElement(By.Id("url")).SendKeys("sdfghjkl");
+            driver.FindElement(By.Id("url")).SendKeys(data);
             driver.FindElement(By.CssSelector("body > main > form > table > tbody > tr:nth-child(3) > td > button")).Click();
             bool errorMessageIsDisplayed = driver.FindElement(By.CssSelector("body > div")).Displayed;
 
@@ -73,7 +74,7 @@ namespace UrlShortener.Tests
             Assert.IsTrue(errorMessageIsDisplayed);
         }
         [Test]
-        public void Test_ShortUrlsPage_VisitsIsUpdated()
+        public void Test_ShortUrlsPage_VisitsAreUpdated()
         {
             driver.Url = "https://shorturl.nakov.repl.co/urls";
             string urlToOpen = "http://shorturl.nakov.repl.co/go/nak";
