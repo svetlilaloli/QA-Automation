@@ -12,3 +12,4 @@ https://github.com/svetlilaloli/QA-Automation/wiki/API-Testing-using-RestSharp
 https://github.com/svetlilaloli/QA-Automation/wiki/Selenium-WebDriver
 ## Selenium Page Object Model
 https://github.com/svetlilaloli/QA-Automation/wiki/Selenium-Advanced-and-POM
+## Appium Desktop tests
