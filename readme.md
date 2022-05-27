@@ -1,15 +1,16 @@
 # QA Automation Course at SoftUni Practice
-## Unit tests using NUnit
-### Summator class Unit tests
-Summator class has two methods: Sum and Average. The task is to create Unit tests for these methods.
-### Collection class Unit tests
-https://github.com/svetlilaloli/QA-Automation/wiki/NUnit-Basics 
-## API tests using Postman
-https://github.com/svetlilaloli/QA-Automation/wiki/API-Testing-using-Postman
-## API tests using RestSharp
+## 1. Unit testing and NUnit
+- Summator class Unit tests
+Task: Summator class has two methods: Sum and Average. The task is to create Unit tests for these methods.
+- Collection class Unit tests
+Task: https://github.com/svetlilaloli/QA-Automation/wiki/NUnit-Basics 
+## 2. API testing and REST
+- using Postman
+Task: https://github.com/svetlilaloli/QA-Automation/wiki/API-Testing-using-Postman
+- using RestSharp
 https://github.com/svetlilaloli/QA-Automation/wiki/API-Testing-using-RestSharp
-## UI tests with Selenium WebDriver 
+## 3. Selenium Basics
 https://github.com/svetlilaloli/QA-Automation/wiki/Selenium-WebDriver
-## Selenium Page Object Model
+## 4. Selenium Advanced and POM
 https://github.com/svetlilaloli/QA-Automation/wiki/Selenium-Advanced-and-POM
-## Appium Desktop tests
+## 5. Appium Desktop testing
