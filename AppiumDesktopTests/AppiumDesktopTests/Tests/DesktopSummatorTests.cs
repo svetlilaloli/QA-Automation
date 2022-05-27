@@ -1,9 +1,9 @@
-using AppiumDesktopTests.Windows;
+using Summator.Tests.Windows;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Enums;
 using OpenQA.Selenium.Appium.Service;
 
-namespace AppiumDesktopTests.Tests
+namespace Summator.Tests.Tests
 {
     public class DesktopSummatorTests
     {

@@ -1,4 +1,4 @@
-﻿namespace AppiumDesktopTests.Windows
+﻿namespace Summator.Tests.Windows
 {
     public class SummatorWindow
     {
