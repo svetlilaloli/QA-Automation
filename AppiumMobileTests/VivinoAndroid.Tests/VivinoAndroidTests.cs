@@ -10,8 +10,8 @@ namespace VivinoAndroid.Tests
         private const string AppPackage = "vivino.web.app";
         private const string AppActivity = "com.sphinx_solution.Launcher";
         private const string AppiumServer = "http://127.0.0.1:4723/wd/hub";
-        private const string Email = "test_vivino@gmail.com";
-        private const string Password = "p@ss987654321";
+        private const string Email = "SOME_EMAIL";
+        private const string Password = "SOME_PASSWORD";
         private AndroidDriver<AndroidElement> driver;
 
         [SetUp]
