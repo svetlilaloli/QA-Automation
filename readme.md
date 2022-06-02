@@ -14,3 +14,6 @@ https://github.com/svetlilaloli/QA-Automation/wiki/Selenium-WebDriver
 ## 4. Selenium Advanced and POM
 https://github.com/svetlilaloli/QA-Automation/wiki/Selenium-Advanced-and-POM
 ## 5. Appium Desktop testing
+
+## 6. Appium Mobile Testing
+https://github.com/svetlilaloli/QA-Automation/wiki/Appium-Mobile-Testing
