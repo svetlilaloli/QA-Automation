@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32519.379
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactBookAndroid.Tests", "ContactBookAndroid.Tests\ContactBookAndroid.Tests.csproj", "{B6992142-9E12-4176-B491-C293E270D1C1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VivinoAndroid.Tests", "VivinoAndroid.Tests\VivinoAndroid.Tests.csproj", "{4E355B7A-7B20-4933-825A-24F88F11A509}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SummatorAndroid.Tests", "SummatorAndroid.Tests\SummatorAndroid.Tests.csproj", "{04F5BA80-7E9F-42D3-9395-16EFFE00D729}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B6992142-9E12-4176-B491-C293E270D1C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6992142-9E12-4176-B491-C293E270D1C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6992142-9E12-4176-B491-C293E270D1C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6992142-9E12-4176-B491-C293E270D1C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E355B7A-7B20-4933-825A-24F88F11A509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E355B7A-7B20-4933-825A-24F88F11A509}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E355B7A-7B20-4933-825A-24F88F11A509}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E355B7A-7B20-4933-825A-24F88F11A509}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04F5BA80-7E9F-42D3-9395-16EFFE00D729}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04F5BA80-7E9F-42D3-9395-16EFFE00D729}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04F5BA80-7E9F-42D3-9395-16EFFE00D729}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04F5BA80-7E9F-42D3-9395-16EFFE00D729}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6358EB84-AA80-422E-BED7-C7648EA1825F}
+	EndGlobalSection
+EndGlobal
