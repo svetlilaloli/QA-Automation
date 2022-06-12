@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using SummatorWithPOM.PageObjects;
+using System.Diagnostics;
 
 namespace SummatorWithPOM.Tests
 {
