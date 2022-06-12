@@ -10,17 +10,10 @@ jobs:
   summator-unit-tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: '6.0.x'
-    - name: Restore dependencies
-      working-directory: ./Summator
-      run: dotnet restore
-    - name: Build
-      working-directory: ./Summator
-      run: dotnet build --no-restore
-    - name: Test
-      working-directory: ./Summator
-      run: dotnet test --no-build --verbosity normal
+      - uses: actions/checkout@v2
+      - run: dotnet restore Summator
+      - run: dotnet build Summator --no-restore
+      - run: dotnet test Summator --no-build --verbosity normal
+      - run: dotnet restore SummatorWithPOM/SummatorWithPOM
+      - run: dotnet build SummatorWithPOM/SummatorWithPOM --no-restore
+      - run: dotnet test SummatorWithPOM/SummatorWithPOM --no-build --verbosity normal
