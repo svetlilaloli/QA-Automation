@@ -9,10 +9,16 @@ namespace SummatorWithPOM.Tests
     {
         private SumTwoNumbersPage page;
         private IWebDriver driver;
+        private ChromeOptions options;
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            driver = new ChromeDriver();
+            options = new ChromeOptions();
+            if (!Debugger.IsAttached)
+            {
+                options.AddArguments("--headless");
+            }
+            driver = new ChromeDriver(options);
             page = new SumTwoNumbersPage(driver);
             page.Open();
         }
