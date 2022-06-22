@@ -1,4 +1,5 @@
-# QA Automation Course at SoftUni Practice
+# QA Automation Course at SoftUni 
+Task description 
 ## 1. Unit testing and NUnit
 - Summator class Unit tests
 Task: Summator class has two methods: Sum and Average. The task is to create Unit tests for these methods.
