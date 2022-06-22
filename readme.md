@@ -17,3 +17,7 @@ https://github.com/svetlilaloli/QA-Automation/wiki/Selenium-Advanced-and-POM
 https://github.com/svetlilaloli/QA-Automation/wiki/Appium-Desktop-Testing
 ## 6. Appium Mobile Testing
 https://github.com/svetlilaloli/QA-Automation/wiki/Appium-Mobile-Testing
+## 7. ExamPrep ContactBook
+https://github.com/svetlilaloli/QA-Automation/wiki/Exam-Prep
+## 8. Exam TaskBoard
+https://github.com/svetlilaloli/QA-Automation/wiki/Exam
