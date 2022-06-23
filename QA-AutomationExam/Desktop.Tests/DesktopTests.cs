@@ -30,9 +30,9 @@ namespace Desktop.Tests
             apiTextField.SendKeys(ApiUrl);
             driver.FindElementByAccessibilityId("buttonConnect").Click();
 
-            var openTable = driver.FindElementsByAccessibilityId("listViewTasks");
+            var allTasks = driver.FindElementsByAccessibilityId("listViewTasks");
 
-            foreach (var task in openTable)
+            foreach (var task in allTasks)
             {
                 if (task.Text.StartsWith("Project"))
                 {
